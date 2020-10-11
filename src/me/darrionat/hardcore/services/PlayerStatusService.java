@@ -16,12 +16,8 @@ public class PlayerStatusService {
 		return !deadPlayerRepository.getDeadPlayers().contains(p.getUniqueId());
 	}
 
-	public void revivePlayer(Player p) {
-		deadPlayerRepository.removePlayer(p);
-	}
-
 	public void setPlayerToDead(Player p) {
 		deadPlayerRepository.addPlayer(p);
-		// Teleport the player to a location, etc.	
+		// Teleport the player to a location, etc.
 	}
 }

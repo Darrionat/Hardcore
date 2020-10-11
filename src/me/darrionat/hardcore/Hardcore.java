@@ -4,8 +4,11 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import me.darrionat.hardcore.events.PlayerDeath;
 import me.darrionat.hardcore.events.PlayerJoin;
+import me.darrionat.hardcore.events.PlayerRespawn;
 import me.darrionat.hardcore.services.FileService;
+import me.darrionat.hardcore.services.NaturalRegenerationService;
 import me.darrionat.hardcore.services.PlayerStatusService;
+import me.darrionat.hardcore.services.RevivalService;
 import me.darrionat.hardcore.statics.Bootstrapper;
 import me.darrionat.hardcore.utils.Utils;
 
@@ -13,6 +16,8 @@ public class Hardcore extends JavaPlugin {
 
 	public FileService fileService;
 	public PlayerStatusService playerStatusService;
+	public NaturalRegenerationService naturalRegenerationService;
+	public RevivalService revivalService;
 
 	@Override
 	public void onEnable() {
@@ -21,9 +26,11 @@ public class Hardcore extends JavaPlugin {
 
 		this.fileService = bootstrapper.getFileService();
 		this.playerStatusService = bootstrapper.getPlayerStatusService();
+		this.naturalRegenerationService = bootstrapper.getNaturalRegenerationService();
+		this.revivalService = bootstrapper.getRevivalService();
 
+		naturalRegenerationService.disableNaturalRegeneration();
 		initializeListeners();
-
 	}
 
 	@Override
@@ -34,6 +41,7 @@ public class Hardcore extends JavaPlugin {
 	private void initializeListeners() {
 		new PlayerDeath(this);
 		new PlayerJoin(this);
+		new PlayerRespawn(this);
 	}
 
 	public void log(String s) {

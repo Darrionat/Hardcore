@@ -43,5 +43,6 @@ public class DeadPlayerRepository {
 
 	public void addPlayer(Player p) {
 		fileService.deadPlayersConfiguration.set(p.getUniqueId().toString(), System.currentTimeMillis());
+		fileService.saveConfigFile("deadplayers", fileService.deadPlayersConfiguration);
 	}
 }

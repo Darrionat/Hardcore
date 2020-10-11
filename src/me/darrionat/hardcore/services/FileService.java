@@ -30,15 +30,18 @@ public class FileService {
 	private File dataFile;
 
 	public FileConfiguration deadPlayersConfiguration;
+	public FileConfiguration statsDataConfig;
 	// -------------------------------------
 
 	private void setupFiles() {
 		plugin.log("Setting up files");
 		Set<String> configFiles = new HashSet<String>();
+		configFiles.add("config");
 		setupConfigurationFiles(configFiles);
 
 		Set<String> dataFiles = new HashSet<String>();
 		dataFiles.add("deadplayers");
+		dataFiles.add("stats");
 		setupDataFiles(dataFiles);
 
 		deadPlayersConfiguration = getDataConfig("deadplayers");

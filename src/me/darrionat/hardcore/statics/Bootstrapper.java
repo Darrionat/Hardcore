@@ -3,7 +3,9 @@ package me.darrionat.hardcore.statics;
 import me.darrionat.hardcore.Hardcore;
 import me.darrionat.hardcore.repositories.DeadPlayerRepository;
 import me.darrionat.hardcore.services.FileService;
+import me.darrionat.hardcore.services.NaturalRegenerationService;
 import me.darrionat.hardcore.services.PlayerStatusService;
+import me.darrionat.hardcore.services.RevivalService;
 
 public class Bootstrapper {
 
@@ -14,6 +16,8 @@ public class Bootstrapper {
 	// Services
 	private FileService fileService;
 	private PlayerStatusService playerStatusService;
+	private NaturalRegenerationService naturalRegenerationService;
+	private RevivalService revivalService;
 
 	private Bootstrapper() {
 	}
@@ -25,6 +29,8 @@ public class Bootstrapper {
 		deadPlayerRepository = new DeadPlayerRepository(fileService);
 		// Services
 		playerStatusService = new PlayerStatusService(deadPlayerRepository);
+		naturalRegenerationService = new NaturalRegenerationService(plugin);
+		revivalService = new RevivalService(deadPlayerRepository);
 	}
 
 	public static Bootstrapper getBootstrapper() {
@@ -39,5 +45,13 @@ public class Bootstrapper {
 
 	public PlayerStatusService getPlayerStatusService() {
 		return playerStatusService;
+	}
+
+	public NaturalRegenerationService getNaturalRegenerationService() {
+		return naturalRegenerationService;
+	}
+
+	public RevivalService getRevivalService() {
+		return revivalService;
 	}
 }
