@@ -11,9 +11,9 @@ public class CreateDeathWorldSubCommand {
 	private MessageService messageService;
 	private DeathWorldService deathWorldService;
 
-	public CreateDeathWorldSubCommand(Hardcore plugin) {
-		this.deathWorldService = plugin.deathWorldService;
-		this.messageService = plugin.messageService;
+	public CreateDeathWorldSubCommand(Hardcore plugin, DeathWorldService deathWorldService,
+			MessageService messageService) {
+		this.deathWorldService = deathWorldService;
 	}
 
 	public void createWorld(CommandSender sender) {

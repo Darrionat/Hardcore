@@ -14,13 +14,14 @@ public class HelpSubCommand {
 	private String pageAmtString;
 	private List<String> commandList;
 
-	public HelpSubCommand(Hardcore plugin) {
+	public HelpSubCommand(Hardcore plugin, MessageService messageService) {
 		topMsg = "&6&l" + plugin.getName() + " v" + plugin.getDescription().getVersion() + " Commands";
 		pageAmtString = String.valueOf((commandList.size() + 5 - 1) / 5);
 
-		MessageService messageService = plugin.messageService;
+		commandList.add(messageService.getMessage(messageService.helpHelp));
 		commandList.add(messageService.getMessage(messageService.helpRevive));
 		commandList.add(messageService.getMessage(messageService.helpCreateDeathWorld));
+		commandList.add(messageService.getMessage(messageService.helpSetSpawn));
 	}
 
 	public void sendPage(CommandSender sender, String pageString) {

@@ -10,16 +10,14 @@ import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 
-import me.darrionat.hardcore.Hardcore;
-
 public class ConfigRepository {
 
-	private Hardcore plugin;
+	private FileRepository fileRepository;
 	private FileConfiguration config;
 
-	public ConfigRepository(Hardcore plugin) {
-		this.plugin = plugin;
-		config = plugin.getConfig();
+	public ConfigRepository(FileRepository fileRepository) {
+		this.fileRepository = fileRepository;
+		config = fileRepository.getDataConfig("config");
 	}
 
 	public List<String> getNaturalRegenWorlds() {
@@ -27,12 +25,12 @@ public class ConfigRepository {
 	}
 
 	public String getDeathWorldName() {
-		return plugin.getConfig().getString("deathWorld.name");
+		return config.getString("deathWorld.name");
 	}
 
 	@Nullable
 	public World getDeathWorld() {
-		return Bukkit.getWorld(plugin.getConfig().getString("deathWorld.name"));
+		return Bukkit.getWorld(config.getString("deathWorld.name"));
 	}
 
 	@Nullable
@@ -47,5 +45,22 @@ public class ConfigRepository {
 		float yaw = (float) section.getDouble("yaw");
 		float pitch = (float) section.getDouble("pitch");
 		return new Location(getDeathWorld(), x, y, z, yaw, pitch);
+	}
+
+	/**
+	 * @return Whether it was done successfully or not
+	 */
+	public boolean setDeathWorldSpawn(Location location) {
+		if (getDeathWorld() == null) {
+			return false;
+		}
+		ConfigurationSection section = config.getConfigurationSection("deathWorld.spawn");
+		section.set("x", location.getX());
+		section.set("y", location.getY());
+		section.set("z", location.getZ());
+		section.set("yaw", location.getYaw());
+		section.set("pitch", location.getPitch());
+		fileRepository.saveConfigFile("config", config);
+		return true;
 	}
 }

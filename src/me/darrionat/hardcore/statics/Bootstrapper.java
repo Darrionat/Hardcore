@@ -1,6 +1,11 @@
 package me.darrionat.hardcore.statics;
 
 import me.darrionat.hardcore.Hardcore;
+import me.darrionat.hardcore.commands.HardcoreAdminCommand;
+import me.darrionat.hardcore.events.EntitySpawn;
+import me.darrionat.hardcore.events.PlayerDeath;
+import me.darrionat.hardcore.events.PlayerJoin;
+import me.darrionat.hardcore.events.PlayerQuit;
 import me.darrionat.hardcore.repositories.ConfigRepository;
 import me.darrionat.hardcore.repositories.DeadPlayerRepository;
 import me.darrionat.hardcore.repositories.FileRepository;
@@ -33,19 +38,31 @@ public class Bootstrapper {
 	}
 
 	public void initialize(Hardcore plugin) {
+
 		// Files setup first
 		fileRepository = new FileRepository(plugin);
+
 		// Repositories
-		configRepository = new ConfigRepository(plugin);
+		configRepository = new ConfigRepository(fileRepository);
 		deadPlayerRepository = new DeadPlayerRepository(fileRepository);
 		playerStatsRepository = new PlayerStatsRepository(fileRepository);
+
 		// Services
 		deathWorldService = new DeathWorldService(configRepository);
 		naturalRegenerationService = new NaturalRegenerationService(configRepository);
 		playerStatusService = new PlayerStatusService(deadPlayerRepository);
 		revivalService = new RevivalService(deadPlayerRepository, playerStatsRepository);
 		statsService = new StatsService(playerStatsRepository);
-		this.messageService = new MessageService(fileRepository);
+		messageService = new MessageService(fileRepository);
+
+		// Listeners
+		new PlayerJoin(plugin, statsService, playerStatusService, deathWorldService, revivalService);
+		new PlayerQuit(plugin, statsService);
+		new PlayerDeath(plugin, messageService, playerStatusService, deathWorldService);
+		new EntitySpawn(plugin, deathWorldService);
+
+		// Commands
+		new HardcoreAdminCommand(plugin, deathWorldService, messageService, playerStatusService, revivalService);
 	}
 
 	public static Bootstrapper getBootstrapper() {
@@ -54,7 +71,7 @@ public class Bootstrapper {
 		return instance;
 	}
 
-	public DeathWorldService getDeathService() {
+	public DeathWorldService getDeathWorldService() {
 		return deathWorldService;
 	}
 

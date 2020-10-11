@@ -2,8 +2,13 @@ name: Hardcore
 author: Darrionat
 main: me.darrionat.hardcore.Hardcore
 description: Create a hardcore-mode server
-version: 0.3
+version: 0.4
 api-version: 1.13
+
+commands:
+  hcadmin:
+    aliases: [hardcoreadmin, hca]
+    usage: /<command> help
 
 permissions:
   hardcore.admin:

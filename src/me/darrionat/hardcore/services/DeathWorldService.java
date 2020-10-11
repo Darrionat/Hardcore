@@ -38,11 +38,20 @@ public class DeathWorldService {
 		return Bukkit.getWorld(getName());
 	}
 
+	@SuppressWarnings("deprecation")
 	public boolean movePlayerToHell(Player p) {
 		Location spawn = configRepository.getDeathWorldSpawn();
 		if (spawn == null) {
 			return false;
 		}
+		p.sendTitle("&4YOU DIED", null);
 		return p.teleport(spawn);
+	}
+
+	/**
+	 * @return Whether it was done successfully or not
+	 */
+	public boolean setSpawn(Location location) {
+		return configRepository.setDeathWorldSpawn(location);
 	}
 }

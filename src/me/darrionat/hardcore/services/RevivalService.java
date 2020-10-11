@@ -29,7 +29,13 @@ public class RevivalService {
 		if (!Bukkit.getOnlinePlayers().contains(p)) {
 			return;
 		}
-		// TODO
-		// if player is online, handle teleportation and etc then
+		respawnPlayer(p);
+	}
+
+	@SuppressWarnings("deprecation")
+	public void respawnPlayer(Player p) {
+		p.getInventory().clear();
+		p.teleport(p.getBedLocation());
+		p.sendTitle("&aREVIVED", null);
 	}
 }

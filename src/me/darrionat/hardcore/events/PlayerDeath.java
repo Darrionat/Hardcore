@@ -7,28 +7,37 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 
 import me.darrionat.hardcore.Hardcore;
+import me.darrionat.hardcore.services.DeathWorldService;
 import me.darrionat.hardcore.services.MessageService;
+import me.darrionat.hardcore.services.PlayerStatusService;
 
 public class PlayerDeath implements Listener {
 
 	private Hardcore plugin;
 	private MessageService messageService;
+	private PlayerStatusService playerStatusService;
+	private DeathWorldService deathWorldService;
 
-	public PlayerDeath(Hardcore plugin) {
+	public PlayerDeath(Hardcore plugin, MessageService messageService, PlayerStatusService playerStatusService,
+			DeathWorldService deathWorldService) {
 		this.plugin = plugin;
-		this.messageService = plugin.messageService;
+		this.messageService = messageService;
+		this.playerStatusService = playerStatusService;
+		this.deathWorldService = deathWorldService;
+
 		Bukkit.getPluginManager().registerEvents(this, plugin);
 	}
 
 	@EventHandler
 	public void onDeath(PlayerDeathEvent e) {
 		Player p = e.getEntity();
-		if (!plugin.playerStatusService.playerIsAlive(p)) {
+		if (!playerStatusService.playerIsAlive(p)) {
 			return;
 		}
 
-		plugin.playerStatusService.setPlayerToDead(p);
-		if (!plugin.deathWorldService.movePlayerToHell(p)) {
+		playerStatusService.setPlayerToDead(p);
+		p.spigot().respawn();
+		if (!deathWorldService.movePlayerToHell(p)) {
 			plugin.log(messageService.getMessage(messageService.noDeathWorld));
 		}
 	}

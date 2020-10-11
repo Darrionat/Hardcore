@@ -7,20 +7,20 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 import me.darrionat.hardcore.Hardcore;
+import me.darrionat.hardcore.services.StatsService;
 
 public class PlayerQuit implements Listener {
 
-	private Hardcore plugin;
+	private StatsService statsService;
 
-	public PlayerQuit(Hardcore plugin) {
-		this.plugin = plugin;
+	public PlayerQuit(Hardcore plugin, StatsService statsService) {
+		this.statsService = statsService;
 		Bukkit.getPluginManager().registerEvents(this, plugin);
 	}
 
 	@EventHandler
 	public void onJoin(PlayerQuitEvent e) {
 		Player p = e.getPlayer();
-		
-		plugin.statsService.setLastLog(p, System.currentTimeMillis());
+		statsService.setLastLog(p, System.currentTimeMillis());
 	}
 }

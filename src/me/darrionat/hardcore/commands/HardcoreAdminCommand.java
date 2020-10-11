@@ -6,7 +6,10 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import me.darrionat.hardcore.Hardcore;
+import me.darrionat.hardcore.services.DeathWorldService;
 import me.darrionat.hardcore.services.MessageService;
+import me.darrionat.hardcore.services.PlayerStatusService;
+import me.darrionat.hardcore.services.RevivalService;
 import me.darrionat.hardcore.utils.Utils;
 
 public class HardcoreAdminCommand implements CommandExecutor {
@@ -17,22 +20,24 @@ public class HardcoreAdminCommand implements CommandExecutor {
 	private ReviveSubCommand reviveSubCommand;
 	private HelpSubCommand helpSubCommand;
 	private CreateDeathWorldSubCommand createDeathWorldSubCommand;
+	private SetSpawnSubCommand setSpawnSubCommand;
 
 	private MessageService messageService;
 
-	public HardcoreAdminCommand(Hardcore plugin) {
+	public HardcoreAdminCommand(Hardcore plugin, DeathWorldService deathWorldService, MessageService messageService,
+			PlayerStatusService playerStatusService, RevivalService revivalService) {
 		this.plugin = plugin;
-		this.reviveSubCommand = new ReviveSubCommand(plugin);
-		this.helpSubCommand = new HelpSubCommand(plugin);
-		this.createDeathWorldSubCommand = new CreateDeathWorldSubCommand(plugin);
-		this.messageService = plugin.messageService;
+		this.messageService = messageService;
+		this.reviveSubCommand = new ReviveSubCommand(plugin, playerStatusService, revivalService, messageService);
+		this.helpSubCommand = new HelpSubCommand(plugin, messageService);
+		this.createDeathWorldSubCommand = new CreateDeathWorldSubCommand(plugin, deathWorldService, messageService);
+		this.setSpawnSubCommand = new SetSpawnSubCommand(plugin, deathWorldService, messageService);
 
 		plugin.getCommand("hcadmin").setExecutor(this);
 	}
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-
 		if (sender instanceof Player) {
 			Player p = (Player) sender;
 			if (!p.hasPermission(permission)) {
@@ -46,7 +51,13 @@ public class HardcoreAdminCommand implements CommandExecutor {
 			sendBaseMessage(sender);
 			return true;
 		}
+		if (!isSubCommand(sender, args)) {
+			sendBaseMessage(sender);
+		}
+		return true;
+	}
 
+	public boolean isSubCommand(CommandSender sender, String[] args) {
 		if (args[0].equalsIgnoreCase("help")) {
 			if (args.length == 1) {
 				helpSubCommand.sendPage(sender, "1");
@@ -71,8 +82,16 @@ public class HardcoreAdminCommand implements CommandExecutor {
 			createDeathWorldSubCommand.createWorld(sender);
 			return true;
 		}
-		sendBaseMessage(sender);
-		return true;
+
+		if (args[0].equalsIgnoreCase("setspawn")) {
+			if (sender instanceof Player) {
+				setSpawnSubCommand.setSpawn((Player) sender);
+			} else {
+				sender.sendMessage(messageService.getMessage(messageService.onlyPlayersCommand));
+			}
+			return true;
+		}
+		return false;
 	}
 
 	public void sendBaseMessage(CommandSender sender) {

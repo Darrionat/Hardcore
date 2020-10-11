@@ -16,10 +16,11 @@ public class ReviveSubCommand {
 	private RevivalService revivalService;
 	private MessageService messageService;
 
-	public ReviveSubCommand(Hardcore plugin) {
-		this.playerStatusService = plugin.playerStatusService;
-		this.revivalService = plugin.revivalService;
-		this.messageService = plugin.messageService;
+	public ReviveSubCommand(Hardcore plugin, PlayerStatusService playerStatusService, RevivalService revivalService,
+			MessageService messageService) {
+		this.playerStatusService = playerStatusService;
+		this.revivalService = revivalService;
+		this.messageService = messageService;
 	}
 
 	@SuppressWarnings("deprecation")
