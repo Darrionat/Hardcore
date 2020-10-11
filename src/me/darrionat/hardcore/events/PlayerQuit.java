@@ -4,26 +4,23 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 
 import me.darrionat.hardcore.Hardcore;
 
-public class PlayerRespawn implements Listener {
+public class PlayerQuit implements Listener {
 
 	private Hardcore plugin;
 
-	public PlayerRespawn(Hardcore plugin) {
+	public PlayerQuit(Hardcore plugin) {
 		this.plugin = plugin;
 		Bukkit.getPluginManager().registerEvents(this, plugin);
 	}
 
 	@EventHandler
-	public void onRespawn(PlayerRespawnEvent e) {
+	public void onJoin(PlayerQuitEvent e) {
 		Player p = e.getPlayer();
-		if (!plugin.playerStatusService.playerIsAlive(p)) {
-			return;
-		}
-		// Player is now being revived
-		p.teleport(p.getBedLocation());
+		
+		plugin.statsService.setLastLog(p, System.currentTimeMillis());
 	}
 }

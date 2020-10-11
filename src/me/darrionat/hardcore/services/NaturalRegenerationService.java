@@ -4,19 +4,19 @@ import org.bukkit.Bukkit;
 import org.bukkit.GameRule;
 import org.bukkit.World;
 
-import me.darrionat.hardcore.Hardcore;
+import me.darrionat.hardcore.repositories.ConfigRepository;
 
 public class NaturalRegenerationService {
 
-	private Hardcore plugin;
+	private ConfigRepository configRepository;
 
-	public NaturalRegenerationService(Hardcore plugin) {
-		this.plugin = plugin;
+	public NaturalRegenerationService(ConfigRepository configRepository) {
+		this.configRepository = configRepository;
 	}
 
 	public void disableNaturalRegeneration() {
 		for (World w : Bukkit.getWorlds()) {
-			if (plugin.getConfig().getStringList("allowNaturalRegenerationWorlds").contains(w.getName()))
+			if (configRepository.getNaturalRegenWorlds().contains(w.getName()))
 				continue;
 			GameRule<Boolean> rule = GameRule.NATURAL_REGENERATION;
 			w.setGameRule(rule, false);

@@ -1,4 +1,4 @@
-package me.darrionat.hardcore.services;
+package me.darrionat.hardcore.repositories;
 
 import java.io.File;
 import java.io.IOException;
@@ -15,11 +15,11 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import me.darrionat.hardcore.Hardcore;
 import me.darrionat.hardcore.utils.Utils;
 
-public class FileService {
+public class FileRepository {
 
 	private Hardcore plugin;
 
-	public FileService(Hardcore plugin) {
+	public FileRepository(Hardcore plugin) {
 		this.plugin = plugin;
 
 		setupFiles();

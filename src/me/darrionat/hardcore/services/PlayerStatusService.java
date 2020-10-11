@@ -18,6 +18,5 @@ public class PlayerStatusService {
 
 	public void setPlayerToDead(Player p) {
 		deadPlayerRepository.addPlayer(p);
-		// Teleport the player to a location, etc.
 	}
 }

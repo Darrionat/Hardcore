@@ -1,11 +1,15 @@
 package me.darrionat.hardcore.statics;
 
 import me.darrionat.hardcore.Hardcore;
+import me.darrionat.hardcore.repositories.ConfigRepository;
 import me.darrionat.hardcore.repositories.DeadPlayerRepository;
-import me.darrionat.hardcore.services.FileService;
+import me.darrionat.hardcore.repositories.FileRepository;
+import me.darrionat.hardcore.repositories.PlayerStatsRepository;
+import me.darrionat.hardcore.services.DeathService;
 import me.darrionat.hardcore.services.NaturalRegenerationService;
 import me.darrionat.hardcore.services.PlayerStatusService;
 import me.darrionat.hardcore.services.RevivalService;
+import me.darrionat.hardcore.services.StatsService;
 
 public class Bootstrapper {
 
@@ -13,24 +17,32 @@ public class Bootstrapper {
 
 	// Repositories
 	private DeadPlayerRepository deadPlayerRepository;
+	private PlayerStatsRepository playerStatsRepository;
+	private ConfigRepository configRepository;
+	private FileRepository fileRepository;
 	// Services
-	private FileService fileService;
+	private DeathService deathService;
 	private PlayerStatusService playerStatusService;
 	private NaturalRegenerationService naturalRegenerationService;
 	private RevivalService revivalService;
+	private StatsService statsService;
 
 	private Bootstrapper() {
 	}
 
 	public void initialize(Hardcore plugin) {
 		// Files setup first
-		fileService = new FileService(plugin);
+		fileRepository = new FileRepository(plugin);
 		// Repositories
-		deadPlayerRepository = new DeadPlayerRepository(fileService);
+		configRepository = new ConfigRepository(plugin);
+		deadPlayerRepository = new DeadPlayerRepository(fileRepository);
+		playerStatsRepository = new PlayerStatsRepository(fileRepository);
 		// Services
+		deathService = new DeathService(configRepository);
+		naturalRegenerationService = new NaturalRegenerationService(configRepository);
 		playerStatusService = new PlayerStatusService(deadPlayerRepository);
-		naturalRegenerationService = new NaturalRegenerationService(plugin);
-		revivalService = new RevivalService(deadPlayerRepository);
+		revivalService = new RevivalService(deadPlayerRepository, playerStatsRepository);
+		statsService = new StatsService(playerStatsRepository);
 	}
 
 	public static Bootstrapper getBootstrapper() {
@@ -39,8 +51,8 @@ public class Bootstrapper {
 		return instance;
 	}
 
-	public FileService getFileService() {
-		return fileService;
+	public DeathService getDeathService() {
+		return deathService;
 	}
 
 	public PlayerStatusService getPlayerStatusService() {
@@ -53,5 +65,9 @@ public class Bootstrapper {
 
 	public RevivalService getRevivalService() {
 		return revivalService;
+	}
+
+	public StatsService getStatsService() {
+		return statsService;
 	}
 }

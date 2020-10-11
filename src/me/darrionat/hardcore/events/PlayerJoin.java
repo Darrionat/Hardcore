@@ -17,12 +17,17 @@ public class PlayerJoin implements Listener {
 		Bukkit.getPluginManager().registerEvents(this, plugin);
 	}
 
-	// If the person was revived while offline, properly respawn them
 	@EventHandler
 	public void onJoin(PlayerJoinEvent e) {
 		Player p = e.getPlayer();
-		if (plugin.playerStatusService.playerIsAlive(p))
-			return;
-		
+
+		if (!plugin.statsService.hasJoinedBefore(p))
+			plugin.statsService.setupPlayerStats(p);
+
+		// TODO: Determine what to do here and what will need to be done
+
+		// If the person was revived while offline, properly respawn them
+		// if (plugin.playerStatusService.playerIsAlive(p))
+		// return;
 	}
 }

@@ -6,14 +6,12 @@ import java.util.UUID;
 
 import org.bukkit.entity.Player;
 
-import me.darrionat.hardcore.services.FileService;
-
 public class DeadPlayerRepository {
 
-	private FileService fileService;
+	private FileRepository fileRepository;
 
-	public DeadPlayerRepository(FileService fileService) {
-		this.fileService = fileService;
+	public DeadPlayerRepository(FileRepository fileRepository) {
+		this.fileRepository = fileRepository;
 	}
 
 	/**
@@ -22,7 +20,7 @@ public class DeadPlayerRepository {
 	 */
 	public List<UUID> getDeadPlayers() {
 		List<UUID> deadPlayerList = new ArrayList<>();
-		for (String uuid : fileService.deadPlayersConfiguration.getKeys(false)) {
+		for (String uuid : fileRepository.deadPlayersConfiguration.getKeys(false)) {
 			deadPlayerList.add(UUID.fromString(uuid));
 		}
 		return deadPlayerList;
@@ -34,15 +32,15 @@ public class DeadPlayerRepository {
 	 * @return Time of player's death in milliseconds
 	 */
 	public long getDeathTimeMillis(Player p) {
-		return fileService.deadPlayersConfiguration.getLong(p.getUniqueId().toString());
+		return fileRepository.deadPlayersConfiguration.getLong(p.getUniqueId().toString());
 	}
 
 	public void removePlayer(Player p) {
-		fileService.deadPlayersConfiguration.set(p.getUniqueId().toString(), null);
+		fileRepository.deadPlayersConfiguration.set(p.getUniqueId().toString(), null);
 	}
 
 	public void addPlayer(Player p) {
-		fileService.deadPlayersConfiguration.set(p.getUniqueId().toString(), System.currentTimeMillis());
-		fileService.saveConfigFile("deadplayers", fileService.deadPlayersConfiguration);
+		fileRepository.deadPlayersConfiguration.set(p.getUniqueId().toString(), System.currentTimeMillis());
+		fileRepository.saveConfigFile("deadplayers", fileRepository.deadPlayersConfiguration);
 	}
 }

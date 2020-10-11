@@ -9,16 +9,13 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
-import me.darrionat.hardcore.Hardcore;
-
 public class PlayerStatsRepository {
 
-	private Hardcore plugin;
 	private FileConfiguration statsDataConfig;
+	private FileRepository fileRepository;
 
-	public PlayerStatsRepository(Hardcore plugin) {
-		this.plugin = plugin;
-		statsDataConfig = plugin.fileService.statsDataConfig;
+	public PlayerStatsRepository(FileRepository fileRepository) {
+		statsDataConfig = fileRepository.statsDataConfig;
 	}
 
 	public void createPlayer(Player p) {
@@ -26,7 +23,11 @@ public class PlayerStatsRepository {
 		section.createSection("firstLog");
 		section.createSection("lastLog");
 		section.createSection("lastLocation");
-		plugin.fileService.saveConfigFile("stats", statsDataConfig);
+		fileRepository.saveConfigFile("stats", statsDataConfig);
+	}
+
+	public boolean playerExists(Player p) {
+		return !(statsDataConfig.getConfigurationSection(p.getUniqueId().toString()) == null);
 	}
 
 	public long getFirstLog(Player p) {
@@ -35,7 +36,7 @@ public class PlayerStatsRepository {
 
 	public void setFirstLog(Player p, long firstLog) {
 		statsDataConfig.getConfigurationSection(p.getUniqueId().toString()).set("firstLog", firstLog);
-		plugin.fileService.saveConfigFile("stats", statsDataConfig);
+		fileRepository.saveConfigFile("stats", statsDataConfig);
 	}
 
 	public long getLastLog(Player p) {
@@ -44,7 +45,7 @@ public class PlayerStatsRepository {
 
 	public void setLastLog(Player p, long lastLog) {
 		statsDataConfig.getConfigurationSection(p.getUniqueId().toString()).set("lastLog", lastLog);
-		plugin.fileService.saveConfigFile("stats", statsDataConfig);
+		fileRepository.saveConfigFile("stats", statsDataConfig);
 	}
 
 	public Location getLastLocation(Player p) {
@@ -64,7 +65,7 @@ public class PlayerStatsRepository {
 		locationSection.set("x", location.getX());
 		locationSection.set("y", location.getY());
 		locationSection.set("z", location.getZ());
-		plugin.fileService.saveConfigFile("stats", statsDataConfig);
+		fileRepository.saveConfigFile("stats", statsDataConfig);
 	}
 
 	public List<Long> getRevivals(Player p) {
@@ -73,6 +74,6 @@ public class PlayerStatsRepository {
 
 	public void setRevivals(Player p, List<Long> revivals) {
 		statsDataConfig.getConfigurationSection(p.getUniqueId().toString()).set("revivals", revivals);
-		plugin.fileService.saveConfigFile("stats", statsDataConfig);
+		fileRepository.saveConfigFile("stats", statsDataConfig);
 	}
 }

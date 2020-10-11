@@ -20,6 +20,9 @@ public class PlayerDeath implements Listener {
 	@EventHandler
 	public void onDeath(PlayerDeathEvent e) {
 		Player p = e.getEntity();
-		plugin.playerStatusService.setPlayerToDead(p);
+		if (plugin.playerStatusService.playerIsAlive(p)) {
+			plugin.playerStatusService.setPlayerToDead(p);
+			plugin.deathService.movePlayerToHell(p);
+		}
 	}
 }
