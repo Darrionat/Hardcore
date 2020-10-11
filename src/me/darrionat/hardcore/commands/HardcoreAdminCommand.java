@@ -6,6 +6,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import me.darrionat.hardcore.Hardcore;
+import me.darrionat.hardcore.services.MessageService;
 import me.darrionat.hardcore.utils.Utils;
 
 public class HardcoreAdminCommand implements CommandExecutor {
@@ -15,11 +16,16 @@ public class HardcoreAdminCommand implements CommandExecutor {
 
 	private ReviveSubCommand reviveSubCommand;
 	private HelpSubCommand helpSubCommand;
+	private CreateDeathWorldSubCommand createDeathWorldSubCommand;
+
+	private MessageService messageService;
 
 	public HardcoreAdminCommand(Hardcore plugin) {
 		this.plugin = plugin;
 		this.reviveSubCommand = new ReviveSubCommand(plugin);
 		this.helpSubCommand = new HelpSubCommand(plugin);
+		this.createDeathWorldSubCommand = new CreateDeathWorldSubCommand(plugin);
+		this.messageService = plugin.messageService;
 
 		plugin.getCommand("hcadmin").setExecutor(this);
 	}
@@ -29,8 +35,9 @@ public class HardcoreAdminCommand implements CommandExecutor {
 
 		if (sender instanceof Player) {
 			Player p = (Player) sender;
-			if (!p.hasPermission(this.permission)) {
-				p.sendMessage(Utils.chat("&cYou do not have the permission " + this.permission));
+			if (!p.hasPermission(permission)) {
+				String noPermMessage = messageService.getMessage(messageService.noPermission);
+				p.sendMessage(noPermMessage.replace("%permission%", permission));
 				return true;
 			}
 		}
@@ -56,18 +63,22 @@ public class HardcoreAdminCommand implements CommandExecutor {
 			} else {
 				reviveSubCommand.revivePlayer(sender, args[1]);
 			}
-
 			return true;
 		}
 
+		// /hcadmin createdeathworld
+		if (args[0].equalsIgnoreCase("createdeathworld")) {
+			createDeathWorldSubCommand.createWorld(sender);
+			return true;
+		}
 		sendBaseMessage(sender);
 		return true;
 	}
 
 	public void sendBaseMessage(CommandSender sender) {
 		sender.sendMessage(Utils.chat("&6&l" + plugin.getName() + " v" + plugin.getDescription().getVersion()));
-		sender.sendMessage(Utils.chat("&6Author: Darrionat"));
-		sender.sendMessage(Utils.chat("&6Support Discord: https://discord.gg/xNKrH5Z"));
-		sender.sendMessage(Utils.chat("&6/hcadmin help for additional information"));
+		sender.sendMessage(Utils.chat(" &6Author: Darrionat"));
+		sender.sendMessage(Utils.chat(" &6Support Discord: https://discord.gg/xNKrH5Z"));
+		sender.sendMessage(Utils.chat(" &6/hcadmin help for additional information"));
 	}
 }

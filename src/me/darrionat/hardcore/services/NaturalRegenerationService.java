@@ -18,8 +18,7 @@ public class NaturalRegenerationService {
 		for (World w : Bukkit.getWorlds()) {
 			if (configRepository.getNaturalRegenWorlds().contains(w.getName()))
 				continue;
-			GameRule<Boolean> rule = GameRule.NATURAL_REGENERATION;
-			w.setGameRule(rule, false);
+			w.setGameRule(GameRule.NATURAL_REGENERATION, false);
 		}
 	}
 }

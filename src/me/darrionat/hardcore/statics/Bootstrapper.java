@@ -5,7 +5,8 @@ import me.darrionat.hardcore.repositories.ConfigRepository;
 import me.darrionat.hardcore.repositories.DeadPlayerRepository;
 import me.darrionat.hardcore.repositories.FileRepository;
 import me.darrionat.hardcore.repositories.PlayerStatsRepository;
-import me.darrionat.hardcore.services.DeathService;
+import me.darrionat.hardcore.services.DeathWorldService;
+import me.darrionat.hardcore.services.MessageService;
 import me.darrionat.hardcore.services.NaturalRegenerationService;
 import me.darrionat.hardcore.services.PlayerStatusService;
 import me.darrionat.hardcore.services.RevivalService;
@@ -21,11 +22,12 @@ public class Bootstrapper {
 	private ConfigRepository configRepository;
 	private FileRepository fileRepository;
 	// Services
-	private DeathService deathService;
+	private DeathWorldService deathWorldService;
 	private PlayerStatusService playerStatusService;
 	private NaturalRegenerationService naturalRegenerationService;
 	private RevivalService revivalService;
 	private StatsService statsService;
+	private MessageService messageService;
 
 	private Bootstrapper() {
 	}
@@ -38,11 +40,12 @@ public class Bootstrapper {
 		deadPlayerRepository = new DeadPlayerRepository(fileRepository);
 		playerStatsRepository = new PlayerStatsRepository(fileRepository);
 		// Services
-		deathService = new DeathService(configRepository);
+		deathWorldService = new DeathWorldService(configRepository);
 		naturalRegenerationService = new NaturalRegenerationService(configRepository);
 		playerStatusService = new PlayerStatusService(deadPlayerRepository);
 		revivalService = new RevivalService(deadPlayerRepository, playerStatsRepository);
 		statsService = new StatsService(playerStatsRepository);
+		this.messageService = new MessageService(fileRepository);
 	}
 
 	public static Bootstrapper getBootstrapper() {
@@ -51,8 +54,8 @@ public class Bootstrapper {
 		return instance;
 	}
 
-	public DeathService getDeathService() {
-		return deathService;
+	public DeathWorldService getDeathService() {
+		return deathWorldService;
 	}
 
 	public PlayerStatusService getPlayerStatusService() {
@@ -69,5 +72,9 @@ public class Bootstrapper {
 
 	public StatsService getStatsService() {
 		return statsService;
+	}
+
+	public MessageService getMessageService() {
+		return messageService;
 	}
 }

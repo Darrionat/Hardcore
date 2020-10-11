@@ -2,7 +2,7 @@ name: Hardcore
 author: Darrionat
 main: me.darrionat.hardcore.Hardcore
 description: Create a hardcore-mode server
-version: 0.2
+version: 0.3
 api-version: 1.13
 
 permissions:

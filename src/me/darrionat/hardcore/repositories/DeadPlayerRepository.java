@@ -35,12 +35,12 @@ public class DeadPlayerRepository {
 		return fileRepository.deadPlayersConfiguration.getLong(p.getUniqueId().toString());
 	}
 
-	public void removePlayer(Player p) {
-		fileRepository.deadPlayersConfiguration.set(p.getUniqueId().toString(), null);
-	}
-
 	public void addPlayer(Player p) {
 		fileRepository.deadPlayersConfiguration.set(p.getUniqueId().toString(), System.currentTimeMillis());
 		fileRepository.saveConfigFile("deadplayers", fileRepository.deadPlayersConfiguration);
+	}
+
+	public void removePlayer(Player p) {
+		fileRepository.deadPlayersConfiguration.set(p.getUniqueId().toString(), null);
 	}
 }

@@ -2,6 +2,8 @@ package me.darrionat.hardcore.repositories;
 
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -24,11 +26,20 @@ public class ConfigRepository {
 		return config.getStringList("allowNaturalRegenWorlds");
 	}
 
+	public String getDeathWorldName() {
+		return plugin.getConfig().getString("deathWorld.name");
+	}
+
+	@Nullable
 	public World getDeathWorld() {
 		return Bukkit.getWorld(plugin.getConfig().getString("deathWorld.name"));
 	}
 
+	@Nullable
 	public Location getDeathWorldSpawn() {
+		if (getDeathWorld() == null) {
+			return null;
+		}
 		ConfigurationSection section = config.getConfigurationSection("deathWorld.spawn");
 		double x = section.getDouble("x");
 		double y = section.getDouble("y");

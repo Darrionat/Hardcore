@@ -5,6 +5,7 @@ import java.util.List;
 import org.bukkit.command.CommandSender;
 
 import me.darrionat.hardcore.Hardcore;
+import me.darrionat.hardcore.services.MessageService;
 import me.darrionat.hardcore.utils.Utils;
 
 public class HelpSubCommand {
@@ -16,7 +17,10 @@ public class HelpSubCommand {
 	public HelpSubCommand(Hardcore plugin) {
 		topMsg = "&6&l" + plugin.getName() + " v" + plugin.getDescription().getVersion() + " Commands";
 		pageAmtString = String.valueOf((commandList.size() + 5 - 1) / 5);
-		commandList.add("&6/hcadmin revive [player] &7- Force revive a dead player");
+
+		MessageService messageService = plugin.messageService;
+		commandList.add(messageService.getMessage(messageService.helpRevive));
+		commandList.add(messageService.getMessage(messageService.helpCreateDeathWorld));
 	}
 
 	public void sendPage(CommandSender sender, String pageString) {

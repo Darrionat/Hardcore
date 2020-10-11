@@ -1,0 +1,12 @@
+prefix:
+  enabled: true
+  string: '&c[HC]'
+deathWorldAlreadyExists: "&cThe death world already exists!"
+noDeathWorld: "&cThere is no death world! Create one with /hcadmin createdeathworld"
+noPermission: "&cYou do not have the permission '%permission%'"
+playerDoesNotExist: "&cThat player does not exist!"
+playerIsAlive: "&cThat player is already alive!"
+revivedPlayer: "&aRevived - %player%""
+help:
+  revive: "&6/hcadmin revive [player] &7- Force revive a dead player"
+  createDeathWorld: "&6/hcadmin createdeathworld &7- Force create the death world"
