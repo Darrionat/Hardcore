@@ -34,7 +34,7 @@ public class RevivalService {
 
 	@SuppressWarnings("deprecation")
 	public void respawnPlayer(Player p) {
-		p.getInventory().clear();
+		// p.getInventory().clear();
 		p.teleport(p.getBedLocation());
 		p.sendTitle("&aREVIVED", null);
 	}

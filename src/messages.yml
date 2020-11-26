@@ -9,7 +9,7 @@ playerIsAlive: "&cThat player is already alive!"
 
 noDeathWorld: "&cThere is no death world! Create one with /hcadmin createdeathworld"
 changedDeathSpawn: "&aYou have changed the spawn of the death dimension to your location"
-revivedPlayer: "&aRevived - %player%""
+revivedPlayer: "&aRevived - %player%"
 help:
   help: "&6/hcadmin help [page] &7- Display all commands" #new
   revive: "&6/hcadmin revive [player] &7- Force revive a dead player"

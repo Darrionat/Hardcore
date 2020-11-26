@@ -8,16 +8,13 @@ import me.darrionat.hardcore.utils.Utils;
 public class MessageService {
 
 	private FileConfiguration messagesConfig;
-	private String prefix = "";
 
 	public MessageService(FileRepository fileRepository) {
-		messagesConfig = fileRepository.getDataConfig("messages");
+		messagesConfig = fileRepository.messagesConfiguration;
 
-		boolean prefixEnabled = messagesConfig.getBoolean("prefix.enabled");
-		if (prefixEnabled)
-			prefix = messagesConfig.getString("prefix.string");
 	}
 
+	private String prefix = "";
 	public String deathWorldAlreadyExists = "deathWorldAlreadyExists";
 	public String noPermission = "noPermission";
 	public String helpHelp = "help.help";
@@ -33,6 +30,11 @@ public class MessageService {
 
 	// Returns String in case placeholders are used
 	public String getMessage(String messageKey) {
+		if (messageKey.contains("help.")) {
+			return Utils.chat(messagesConfig.getString(messageKey));
+		}
+		if (messagesConfig.getBoolean("prefix.enabled"))
+			prefix = messagesConfig.getString("prefix.string");
 		return Utils.chat(prefix + messagesConfig.getString(messageKey));
 	}
 }

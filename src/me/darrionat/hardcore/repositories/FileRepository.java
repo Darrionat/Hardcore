@@ -29,6 +29,8 @@ public class FileRepository {
 	private FileConfiguration dataConfig;
 	private File dataFile;
 
+	public FileConfiguration messagesConfiguration;
+
 	public FileConfiguration deadPlayersConfiguration;
 	public FileConfiguration statsDataConfig;
 	// -------------------------------------
@@ -37,6 +39,7 @@ public class FileRepository {
 		plugin.log("Setting up files");
 		Set<String> configFiles = new HashSet<String>();
 		configFiles.add("config");
+		configFiles.add("messages");
 		setupConfigurationFiles(configFiles);
 
 		Set<String> dataFiles = new HashSet<String>();
@@ -44,7 +47,9 @@ public class FileRepository {
 		dataFiles.add("stats");
 		setupDataFiles(dataFiles);
 
+		messagesConfiguration = getDataConfig("messages");
 		deadPlayersConfiguration = getDataConfig("deadplayers");
+		statsDataConfig = getDataConfig("stats");
 	}
 
 	private void setupConfigurationFiles(Set<String> configFiles) {
@@ -155,6 +160,5 @@ public class FileRepository {
 				config.set(key, null);
 		config.set("version", plugin.getDescription().getVersion());
 		saveConfigFile(fileName, config);
-
 	}
 }

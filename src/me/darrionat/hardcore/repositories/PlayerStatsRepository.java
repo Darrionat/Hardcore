@@ -15,6 +15,7 @@ public class PlayerStatsRepository {
 	private FileRepository fileRepository;
 
 	public PlayerStatsRepository(FileRepository fileRepository) {
+		this.fileRepository = fileRepository;
 		statsDataConfig = fileRepository.statsDataConfig;
 	}
 

@@ -10,6 +10,7 @@ import me.darrionat.hardcore.Hardcore;
 import me.darrionat.hardcore.services.DeathWorldService;
 import me.darrionat.hardcore.services.MessageService;
 import me.darrionat.hardcore.services.PlayerStatusService;
+import me.darrionat.hardcore.utils.Utils;
 
 public class PlayerDeath implements Listener {
 
@@ -36,9 +37,10 @@ public class PlayerDeath implements Listener {
 		}
 
 		playerStatusService.setPlayerToDead(p);
-		p.spigot().respawn();
-		if (!deathWorldService.movePlayerToHell(p)) {
-			plugin.log(messageService.getMessage(messageService.noDeathWorld));
-		}
+		p.kickPlayer(Utils.chat("&cYou died! You can join again 48 hours after your death!"));
+		/*
+		 * p.spigot().respawn(); if (!deathWorldService.movePlayerToHell(p)) {
+		 * plugin.log(messageService.getMessage(messageService.noDeathWorld)); }
+		 */
 	}
 }

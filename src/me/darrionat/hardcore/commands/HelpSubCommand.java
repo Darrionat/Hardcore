@@ -1,5 +1,6 @@
 package me.darrionat.hardcore.commands;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.command.CommandSender;
@@ -12,16 +13,16 @@ public class HelpSubCommand {
 
 	private String topMsg;
 	private String pageAmtString;
-	private List<String> commandList;
+	private List<String> commandList = new ArrayList<>();
 
 	public HelpSubCommand(Hardcore plugin, MessageService messageService) {
 		topMsg = "&6&l" + plugin.getName() + " v" + plugin.getDescription().getVersion() + " Commands";
-		pageAmtString = String.valueOf((commandList.size() + 5 - 1) / 5);
 
 		commandList.add(messageService.getMessage(messageService.helpHelp));
 		commandList.add(messageService.getMessage(messageService.helpRevive));
 		commandList.add(messageService.getMessage(messageService.helpCreateDeathWorld));
 		commandList.add(messageService.getMessage(messageService.helpSetSpawn));
+		pageAmtString = String.valueOf((commandList.size() + 5 - 1) / 5);
 	}
 
 	public void sendPage(CommandSender sender, String pageString) {

@@ -4,7 +4,7 @@ import me.darrionat.hardcore.Hardcore;
 import me.darrionat.hardcore.commands.HardcoreAdminCommand;
 import me.darrionat.hardcore.events.EntitySpawn;
 import me.darrionat.hardcore.events.PlayerDeath;
-import me.darrionat.hardcore.events.PlayerJoin;
+import me.darrionat.hardcore.events.PlayerLogin;
 import me.darrionat.hardcore.events.PlayerQuit;
 import me.darrionat.hardcore.repositories.ConfigRepository;
 import me.darrionat.hardcore.repositories.DeadPlayerRepository;
@@ -56,7 +56,7 @@ public class Bootstrapper {
 		messageService = new MessageService(fileRepository);
 
 		// Listeners
-		new PlayerJoin(plugin, statsService, playerStatusService, deathWorldService, revivalService);
+		new PlayerLogin(plugin, statsService, playerStatusService, deathWorldService, revivalService);
 		new PlayerQuit(plugin, statsService);
 		new PlayerDeath(plugin, messageService, playerStatusService, deathWorldService);
 		new EntitySpawn(plugin, deathWorldService);
